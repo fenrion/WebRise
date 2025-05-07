@@ -1,0 +1,89 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTable
+      author: Maksim Kopylov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DECIMAL(8,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: months
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: users_subs
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subscription_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_at
+                  type: date
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            constraintName: uniqueTwoColumnsUserSubs
+            tableName: users_subs
+            columnNames: user_id, subscription_id
+
+        - addForeignKeyConstraint:
+            constraintName: users_subs_users
+            baseColumnNames: user_id
+            baseTableName: users_subs
+            referencedColumnNames: id
+            referencedTableName: users
+
+        - addForeignKeyConstraint:
+            constraintName: users_subs_subscriptions
+            baseColumnNames: subscription_id
+            baseTableName: users_subs
+            referencedColumnNames: id
+            referencedTableName: subscriptions
