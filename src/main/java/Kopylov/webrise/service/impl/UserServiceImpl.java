@@ -93,9 +93,6 @@ public class UserServiceImpl implements UserService {
         log.info("Добавление подписки");
         userSubsRepository.save(userSubs);
 
-//        User updatedUser = userRepository.findById(userID)
-//                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
-//        log.warn("updated user");
         List<SubscriptionForUserDto> subsList = convertToSubscriptionForUserDto(user);
         return new UserWithSubsDto(user.getName(), subsList);
     }
